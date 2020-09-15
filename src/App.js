@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from 'react';
 
 import './App.css';
-
+import Recipe from './Recipe'
 const App = () => {
 
 
 
-const [recipies, setRecipies] = useState([]);
+  const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-   // getRecipies();
+    getRecipes();
   }, []);
 
 
-/*
-  const getRecipies = async () => {
-    const response = await fetch(`https://api.edamam.com/search?q=chicken&app_id=${APP_ID}&app_key=${APP_KEY}`);
+
+  const getRecipes = async () => {
+    const response = await fetch(`https://api.edamam.com/search?q=chicken&app_id=${process.env.REACT_APP_EDAMAM_ID}&app_key=${process.env.REACT_APP_EDAMAM_KEY}`);
     const data = await response.json();
-    
-  }*/
+    setRecipes(data.hits);
+  }
 
 
 
 
   return (
     <div className="App">
-      <h1>Hello React</h1>
+      <h1>Recipe App</h1>
 
       <form className="search-form">
         <input className="search-bar" type="text" />
@@ -33,6 +33,18 @@ const [recipies, setRecipies] = useState([]);
           Search
         </button>
       </form>
+
+      <div className="recipes">
+
+        {recipes.map(recipe => (
+          <Recipe
+            title={recipe.recipe.label}
+            calories={recipe.recipe.calories}
+            image={recipe.recipe.image}
+          />
+        ))}
+      </div>
+
     </div>
   )
 }
